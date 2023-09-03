@@ -87,6 +87,16 @@ namespace hex {
             void add(const std::string &unlocalizedCategory, const std::string &unlocalizedName, i64 defaultValue, const impl::Callback &callback, bool requiresRestart = false);
 
             /**
+             * @brief Adds a new integer setting entry
+             * @param unlocalizedCategory The category of the setting
+             * @param unlocalizedName The name of the setting
+             * @param defaultValue The default value of the setting
+             * @param callback The callback that will be called when the settings item in the preferences window is rendered
+             * @param requiresRestart Whether the setting requires a restart to take effect
+             */
+            void addf(const std::string &unlocalizedCategory, const std::string &unlocalizedName, float defaultValue, const impl::Callback &callback, bool requiresRestart = false);
+
+            /**
              * @brief Adds a new string setting entry
              * @param unlocalizedCategory The category of the setting
              * @param unlocalizedName The name of the setting
@@ -122,6 +132,14 @@ namespace hex {
             void write(const std::string &unlocalizedCategory, const std::string &unlocalizedName, i64 value);
 
             /**
+             * @brief Writes a float value to the settings file
+             * @param unlocalizedCategory The category of the setting
+             * @param unlocalizedName The name of the setting
+             * @param value The value to write
+             */
+            void writef(const std::string &unlocalizedCategory, const std::string &unlocalizedName, float value);
+
+            /**
              * @brief Writes a string value to the settings file
              * @param unlocalizedCategory The category of the setting
              * @param unlocalizedName The name of the setting
@@ -145,6 +163,15 @@ namespace hex {
              * @return The value of the setting
              */
             i64 read(const std::string &unlocalizedCategory, const std::string &unlocalizedName, i64 defaultValue);
+
+            /**
+             * @brief Reads a float value from the settings file
+             * @param unlocalizedCategory The category of the setting
+             * @param unlocalizedName The name of the setting
+             * @param defaultValue The default value of the setting
+             * @return The value of the setting
+             */
+            float readf(const std::string &unlocalizedCategory, const std::string &unlocalizedName, float defaultValue);
 
             /**
              * @brief Reads a string value from the settings file
