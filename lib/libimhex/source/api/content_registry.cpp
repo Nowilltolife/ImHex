@@ -110,6 +110,19 @@ namespace hex {
                 json[unlocalizedCategory][unlocalizedName] = int(defaultValue);
         }
 
+        void addf(const std::string &unlocalizedCategory, const std::string &unlocalizedName, float defaultValue, const impl::Callback &callback, bool requiresRestart) {
+            log::debug("Registered new integer setting: [{}]: {}", unlocalizedCategory, unlocalizedName);
+
+            impl::getCategoryEntry(unlocalizedCategory)->second.emplace_back(impl::Entry { unlocalizedName, requiresRestart, callback });
+
+            auto &json = impl::getSettingsData();
+
+            if (!json.contains(unlocalizedCategory))
+                json[unlocalizedCategory] = nlohmann::json::object();
+            if (!json[unlocalizedCategory].contains(unlocalizedName) || !json[unlocalizedCategory][unlocalizedName].is_number_float())
+                json[unlocalizedCategory][unlocalizedName] = float(defaultValue);
+        }
+
         void add(const std::string &unlocalizedCategory, const std::string &unlocalizedName, const std::string &defaultValue, const impl::Callback &callback, bool requiresRestart) {
             log::debug("Registered new string setting: [{}]: {}", unlocalizedCategory, unlocalizedName);
 
@@ -149,6 +162,15 @@ namespace hex {
             json[unlocalizedCategory][unlocalizedName] = value;
         }
 
+        void writef(const std::string &unlocalizedCategory, const std::string &unlocalizedName, float value) {
+            auto &json = impl::getSettingsData();
+
+            if (!json.contains(unlocalizedCategory))
+                json[unlocalizedCategory] = nlohmann::json::object();
+
+            json[unlocalizedCategory][unlocalizedName] = value;
+        }
+
         void write(const std::string &unlocalizedCategory, const std::string &unlocalizedName, const std::string &value) {
             auto &json = impl::getSettingsData();
 
@@ -180,6 +202,20 @@ namespace hex {
                 json[unlocalizedCategory][unlocalizedName] = defaultValue;
 
             return json[unlocalizedCategory][unlocalizedName].get<i64>();
+        }
+
+        float readf(const std::string &unlocalizedCategory, const std::string &unlocalizedName, float defaultValue) {
+            auto &json = impl::getSettingsData();
+
+            if (!json.contains(unlocalizedCategory))
+                return defaultValue;
+            if (!json[unlocalizedCategory].contains(unlocalizedName))
+                return defaultValue;
+
+            if (!json[unlocalizedCategory][unlocalizedName].is_number_float())
+                json[unlocalizedCategory][unlocalizedName] = defaultValue;
+
+            return json[unlocalizedCategory][unlocalizedName].get<float>();
         }
 
         std::string read(const std::string &unlocalizedCategory, const std::string &unlocalizedName, const std::string &defaultValue) {
